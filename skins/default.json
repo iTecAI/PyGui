@@ -1,0 +1,12 @@
+{
+  "name":"default",
+  "author":"iTec",
+  "skin":{
+    "background":[224, 224, 224],
+    "borders":[25, 25, 25],
+    "font-color":[0, 0, 0],
+    "font-family":"arial",
+    "active":[186, 186, 186],
+    "text-background":[255,255,255]
+  }
+}
