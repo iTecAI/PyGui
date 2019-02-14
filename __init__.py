@@ -56,7 +56,7 @@ class UI: #main UI
         mouse_pressed = pygame.mouse.get_pressed()[0]
         ret = {'None':{'None':None}}
         for wd in self.widgets[:]:
-            r = {}
+            r = {'click':False,'hover':False,'loop':False}
             if copy.copy(wd.rect).collidepoint(mouse_pos) and mouse_pressed and 'click' in wd.events:
                 if not wd.hit:
                     r['click'] = wd.clicked(events)
