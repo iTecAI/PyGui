@@ -1,4 +1,5 @@
 import pygame, json, sys, copy
+from .widgets import *
 pygame.init()
 
 class UI: #main UI
@@ -43,7 +44,7 @@ class UI: #main UI
 
     def add_widgets(self,widgets):
         for w in widgets:
-            self.widgets.append(widget)
+            self.add_widget(w)
     def loop(self):
         self.screen.fill(self.skin['background'])
         events = pygame.event.get()
@@ -54,26 +55,27 @@ class UI: #main UI
         mouse_pos = pygame.mouse.get_pos()
         mouse_pressed = pygame.mouse.get_pressed()[0]
         ret = {'None':{'None':None}}
-        for i in self.widgets:
+        for wd in self.widgets[:]:
             r = {}
-            if i.rect.collidepoint(mouse_pos) and mouse_pressed and 'click' in i.events:
-                if not i.hit:
-                    r['click'] = i.clicked(events)
-                i.hit = True
+            if copy.copy(wd.rect).collidepoint(mouse_pos) and mouse_pressed and 'click' in wd.events:
+                if not wd.hit:
+                    r['click'] = wd.clicked(events)
+                wd.hit = True
             else:
-                i.hit = False
-            if i.rect.collidepoint(mouse_pos) and 'hover' in i.events:
-                r['hover'] = i.hover(events)
-            if 'loop' in i.events:
-                r['loop'] = i.loop(events)
-            self.screen.blit(i.surface,i.pos)
-            ret[i.name] = r
+                wd.hit = False
+            if copy.copy(wd.rect).collidepoint(mouse_pos) and 'hover' in wd.events:
+                #print(i.rect)
+                r['hover'] = wd.hover(events)
+            if 'loop' in wd.events:
+                r['loop'] = wd.loop(events)
+            self.screen.blit(wd.surface,wd.pos)
+            ret[wd.name] = r
         pygame.display.flip()
         return ret
 
-from widgets import *
 
-ui = UI([200,400])
+
+'''ui = UI([200,400])
 ui.add_widget(Menu([0,0],[200,20],ui.skin,'menu'))
 #ui.add_widget(Label([0,0],[200,400],ui.skin,'label',tsize=12,text='You removed the widgey'))
 while True:
@@ -89,3 +91,4 @@ while True:
                     ui.add_widget(Label([0,0],[200,400],ui.skin,'label',tsize=12,text='You removed the widgey'))
     except KeyError:
         pass
+'''

@@ -118,11 +118,12 @@ class Label(Widget):
 class Menu(Widget):
     def init(self,args=[],kwargs={'title':'Menu','options':['button1','button2','button3']}):
         self.events = ['click','hover','loop']
+        self.lopts = len(kwargs['options'])
         self.font = pygame.font.SysFont(self.skin['font-family'],12)
         self.unhover = pygame.Surface(self.size)
         self.unhover.fill(self.skin['background'])
         self.unhover.blit(self.font.render(kwargs['title'],True,self.skin['font-color']),[2,2])
-        self.hovered = pygame.Surface([self.size[0],self.size[1]+(self.size[1]*len(kwargs['options']))])
+        self.hovered = pygame.Surface([self.size[0],self.size[1]+(self.size[1]*self.lopts)])
         self.hovered.fill(self.skin['active'])
         self.hovered.blit(self.font.render(kwargs['title'],True,self.skin['font-color']),[2,2])
         self.ishovered = False
@@ -143,11 +144,11 @@ class Menu(Widget):
     def loop(self,events):
         if self.ishovered:
             self.surface = self.hovered.copy()
-            self.rect = self.surface.get_rect()
+            self.rect = pygame.Rect(self.pos,[self.size[0],self.size[1]+(self.size[1]*self.lopts)])
             if not self.rect.collidepoint(pygame.mouse.get_pos()):
                 self.ishovered = False
                 self.surface = self.unhover.copy()
-                self.rect = self.surface.get_rect()
+                self.rect = pygame.Rect(self.pos,self.size)
         else:
             self.surface = self.unhover.copy()
-            self.rect = self.surface.get_rect()
+            self.rect = pygame.Rect(self.pos,self.size)
